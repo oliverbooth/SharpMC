@@ -73,7 +73,7 @@ namespace SharpMC.Core
 				"WorldName=world",
 				"Online-mode=false",
 				"Seed=SharpMC",
-				"Motd=A SharpMC Powered Server"
+				"Motd=The hell is this crap?"
 			};
 			Config.Check();
 		}
@@ -89,7 +89,7 @@ namespace SharpMC.Core
 #endif
 			ServerSettings.MaxPlayers = Config.GetProperty("MaxPlayers", 10);
 			ServerSettings.Seed = Config.GetProperty("Seed", "SharpMC");
-			ServerSettings.Motd = Config.GetProperty("motd", "A SharpMC Powered Server");
+			ServerSettings.Motd = Config.GetProperty("motd", "The hell is this crap?");
 
 			Globals.LevelManager = new LevelManager(LoadLevel());
 			Globals.LevelManager.AddLevel("nether", new NetherLevel("nether"));

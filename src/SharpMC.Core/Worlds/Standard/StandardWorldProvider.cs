@@ -33,6 +33,7 @@ using SharpMC.Core.Networking.Packages;
 using SharpMC.Core.Utils;
 using SharpMC.Core.Worlds.Standard.BiomeSystem;
 using SharpMC.Core.Worlds.Standard.Decorators;
+using SharpMC.Core.Worlds.Standard.WorldGen;
 
 namespace SharpMC.Core.Worlds.Standard
 {
@@ -52,7 +53,7 @@ namespace SharpMC.Core.Worlds.Standard
 		private const double BottomsAmplitude = 0.5; //Original 0.5
 		private const double OverhangFrequency = 0.5; //Original 0.5
 		private const double OverhangAmplitude = 0.5; //Original 0.5
-		private const bool EnableOverhang = true; //Enable overhang?
+		private const bool EnableOverhang = false; //Enable overhang?
 		private static readonly Random Getrandom = new Random();
 		private static readonly object SyncLock = new object();
 		public static int WaterLevel = 72;
@@ -60,6 +61,8 @@ namespace SharpMC.Core.Worlds.Standard
 		private readonly CaveGenerator _cavegen = new CaveGenerator(ServerSettings.Seed.GetHashCode());
 		private readonly string _folder;
 		public Dictionary<Tuple<int, int>, ChunkColumn> ChunkCache = new Dictionary<Tuple<int, int>, ChunkColumn>();
+
+		private readonly WorldNoise wNoise;
 
 		public StandardWorldProvider(string folder)
 		{
@@ -73,6 +76,8 @@ namespace SharpMC.Core.Worlds.Standard
 			_biomeManager.AddBiomeType(new PlainsBiome());
 			_biomeManager.AddBiomeType(new DesertBiome());
 			_biomeManager.AddBiomeType(new SunFlowerPlainsBiome());
+
+			wNoise = WorldNoise.Instance;
 		}
 
 		public override sealed bool IsCaching { get; set; }
@@ -166,6 +171,8 @@ namespace SharpMC.Core.Worlds.Standard
 
 		private void PopulateChunk(ChunkColumn chunk)
 		{
+
+
 			var bottom = new SimplexOctaveGenerator(ServerSettings.Seed.GetHashCode(), 8);
 			var overhang = new SimplexOctaveGenerator(ServerSettings.Seed.GetHashCode(), 8);
 			overhang.SetScale(1/OverhangScale);
@@ -182,9 +189,9 @@ namespace SharpMC.Core.Worlds.Standard
 					var cBiome = _biomeManager.GetBiome((int) ox, (int) oz);
 					chunk.BiomeId[x*16 + z] = cBiome.MinecraftBiomeId;
 
-					var bottomHeight =
-						(int)
-							((bottom.Noise(ox, oz, BottomsFrequency, BottomsAmplitude)*BottomsMagnitude) + BottomOffset + cBiome.BaseHeight);
+					//var bottomHeight = (int) ((bottom.Noise(ox, oz, BottomsFrequency, BottomsAmplitude)*BottomsMagnitude) + BottomOffset + cBiome.BaseHeight);
+
+					var bottomHeight = wNoise.Terrain(ox, oz);
 
 					var maxHeight =
 						(int)

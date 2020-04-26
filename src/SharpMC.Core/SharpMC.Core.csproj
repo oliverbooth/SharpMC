@@ -74,6 +74,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SharpNoise, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpNoise.0.11.0\lib\net45\SharpNoise.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="WindowsBase" />
@@ -327,6 +330,9 @@
     <Compile Include="Utils\NbtFormatException.cs" />
     <Compile Include="Worlds\Flatland\FlatLandLevel.cs" />
     <Compile Include="Worlds\Level.cs" />
+    <Compile Include="Worlds\Standard\WorldGen\WorldGenerationSettings.cs" />
+    <Compile Include="Worlds\Standard\WorldGen\WorldGenerator.cs" />
+    <Compile Include="Worlds\Standard\WorldGen\WorldNoise.cs" />
     <Compile Include="Worlds\WorldProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -61,7 +61,7 @@ namespace SharpMC.Core.Worlds.Standard.Decorators
 			if (biome.TreeStructures.Length > 0)
 			{
 				var value = StandardWorldProvider.GetRandomNumber(0, biome.TreeStructures.Length);
-				biome.TreeStructures[value].Create(chunk, x, treebase, z);
+				biome.TreeStructures[value].Create(chunk, x, treebase+1, z);
 			}
 		}
 

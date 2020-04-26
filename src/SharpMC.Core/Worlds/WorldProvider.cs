@@ -55,7 +55,7 @@ namespace SharpMC.Core.Worlds
 		{
 			lock (chunksUsed)
 			{
-				Dictionary<Tuple<int, int>, double> newOrders = new Dictionary<Tuple<int, int>, double>();
+				Dictionary<Tuple<int, int>, double> newChunkRequest = new Dictionary<Tuple<int, int>, double>();
 				double radiusSquared = viewDistance / Math.PI;
 				double radius = Math.Ceiling(Math.Sqrt(radiusSquared));
 				int centerX = (int)player.KnownPosition.X >> 4;
@@ -73,29 +73,29 @@ namespace SharpMC.Core.Worlds
 						int chunkX = (int)(x + centerX);
 						int chunkZ = (int)(z + centerZ);
 						Tuple<int, int> index = new Tuple<int, int>(chunkX, chunkZ);
-						newOrders[index] = distance;
+						newChunkRequest[index] = distance;
 					}
 				}
 
-				if (newOrders.Count > viewDistance)
+				if (newChunkRequest.Count > viewDistance)
 				{
-					foreach (var pair in newOrders.OrderByDescending(pair => pair.Value))
+					foreach (var pair in newChunkRequest.OrderByDescending(pair => pair.Value))
 					{
-						if (newOrders.Count <= viewDistance) break;
-						newOrders.Remove(pair.Key);
+						if (newChunkRequest.Count <= viewDistance) break;
+						newChunkRequest.Remove(pair.Key);
 					}
 				}
 
 				foreach (var chunkKey in chunksUsed.ToArray())
 				{
-					if (!newOrders.ContainsKey(chunkKey))
+					if (!newChunkRequest.ContainsKey(chunkKey))
 					{
 						chunksUsed.Remove(chunkKey);
 						new Task(() => player.UnloadChunk(chunkKey.Item1, chunkKey.Item2)).Start();
 					}
 				}
 
-				foreach (var pair in newOrders.OrderBy(pair => pair.Value))
+				foreach (var pair in newChunkRequest.OrderBy(pair => pair.Value))
 				{
 					if (chunksUsed.Contains(pair.Key)) continue;
 
