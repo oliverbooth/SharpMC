@@ -48,6 +48,7 @@ namespace SharpMC.Core.Utils
 		private readonly Queue<byte[]> _commands = new Queue<byte[]>();
 		private readonly AutoResetEvent _resume = new AutoResetEvent(false);
 		internal bool EncryptionEnabled = false;
+		internal bool KeepAliveEnabled = false;
 		public PacketMode PacketMode = PacketMode.Ping;
 		public Player Player;
 		public TcpClient TcpClient;

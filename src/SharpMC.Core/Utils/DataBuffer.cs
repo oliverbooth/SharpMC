@@ -364,6 +364,14 @@ namespace SharpMC.Core.Utils
 			Write(BitConverter.GetBytes(IPAddress.HostToNetworkOrder(data)));
 		}
 
+		// Sends first 8 bytes of a byte[]
+		public void WriteLong(byte[] data)
+		{
+			byte[] dataBytes = new byte[8];
+			Array.Copy(data, dataBytes, 8);
+			Write(dataBytes);
+		}
+
 		public void WriteUuid(Guid uuid)
 		{
 			var guid = uuid.ToByteArray();

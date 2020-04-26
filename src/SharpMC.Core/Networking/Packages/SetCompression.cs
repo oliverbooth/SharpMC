@@ -32,12 +32,12 @@ namespace SharpMC.Core.Networking.Packages
 
 		public SetCompression(ClientWrapper client) : base(client)
 		{
-			SendId = 0x46;
+			SendId = 0x03;
 		}
 
 		public SetCompression(ClientWrapper client, DataBuffer buffer) : base(client, buffer)
 		{
-			SendId = 0x46;
+			SendId = 0x03;
 		}
 
 		public override void Write()

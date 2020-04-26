@@ -30,12 +30,12 @@ namespace SharpMC.Core.Networking.Packages
 	{
 		public SpawnPosition(ClientWrapper client) : base(client)
 		{
-			SendId = 0x05;
+			SendId = 0x4E;
 		}
 
 		public SpawnPosition(ClientWrapper client, DataBuffer buffer) : base(client, buffer)
 		{
-			SendId = 0x05;
+			SendId = 0x4E;
 		}
 
 		public override void Write()

@@ -24,6 +24,9 @@
 
 using SharpMC.Core.Entity;
 using SharpMC.Core.Utils;
+using System;
+using System.Linq;
+using System.Text;
 
 namespace SharpMC.Core.Networking.Packages
 {
@@ -33,26 +36,31 @@ namespace SharpMC.Core.Networking.Packages
 
 		public JoinGame(ClientWrapper client) : base(client)
 		{
-			SendId = 0x01;
+			SendId = 0x26;
 		}
 
 		public JoinGame(ClientWrapper client, DataBuffer buffer) : base(client, buffer)
 		{
-			SendId = 0x01;
+			SendId = 0x26;
 		}
 
 		public override void Write()
 		{
 			if (Buffer != null)
 			{
-				Buffer.WriteVarInt(SendId);
-				Buffer.WriteInt(Player.EntityId);
-				Buffer.WriteByte((byte) Player.Gamemode);
-				Buffer.WriteByte(Player.Dimension);
-				Buffer.WriteByte((byte) Client.Player.Level.Difficulty);
+				Buffer.WriteVarInt(SendId); 
+
+				Buffer.WriteInt(Player.EntityId); //	Entity ID	Int
+				Buffer.WriteByte((byte) Player.Gamemode); // Gamemode	Unsigned Byte
+				Buffer.WriteInt(Player.Dimension); // Dimension	Int Enum
+				Buffer.WriteLong(ServerSettings.SeedHash); // Hashed seed	Long
 				Buffer.WriteByte((byte) ServerSettings.MaxPlayers);
-				Buffer.WriteString(Client.Player.Level.LevelType.ToString());
-				Buffer.WriteBool(false);
+				var levelType = Client.Player.Level.LevelType.ToString();
+				Buffer.WriteString(char.ToLower(levelType[0]) + levelType.Substring(1)); // pad to 16 bytes?
+				Buffer.WriteVarInt(6); // View distance varint
+				Buffer.WriteBool(false); // Reduced debug info
+				//Buffer.WriteByte((byte) Client.Player.Level.Difficulty);
+				Buffer.WriteBool(true); // Enable respawn screen
 				Buffer.FlushData();
 			}
 		}

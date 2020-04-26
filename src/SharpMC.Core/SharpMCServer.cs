@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using SharpMC.Core.API;
 using SharpMC.Core.Entity;
@@ -45,6 +47,9 @@ namespace SharpMC.Core
 		{
 			if (!_initiated) throw new Exception("Server not initated!");
 
+			using (HashAlgorithm algorithm = SHA256.Create())
+				ServerSettings.SeedHash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(ServerSettings.Seed));
+
 			ConsoleFunctions.WriteInfoLine("Enabling plugins...");
 			EnablePlugins();
 
@@ -83,7 +88,7 @@ namespace SharpMC.Core
 			Globals.Rand = new Random();
 			Console.Title = Globals.ProtocolName;
 			ServerSettings.Debug = Config.GetProperty("debug", false);
-			ServerSettings.DisplayPacketErrors = Config.GetProperty("ShowNetworkErrors", false);
+			ServerSettings.DisplayPacketErrors = Config.GetProperty("ShowNetworkErrors", true);
 #if DEBUG
 			ServerSettings.Debug = true;
 #endif

@@ -75,6 +75,7 @@ namespace SharpMC.Core.Networking.Packages
 					return;
 				}
 
+				new SetCompression(Client) {CompressionLevel = ServerSettings.UseCompression ? ServerSettings.CompressionThreshold : -1 }.Write();
 				new LoginSucces(Client) { Username = username, Uuid = uuid }.Write();
 
 				Client.Player = new Player(Globals.LevelManager.MainLevel)
@@ -84,14 +85,15 @@ namespace SharpMC.Core.Networking.Packages
 					Wrapper = Client,
 					Gamemode = Globals.LevelManager.MainLevel.DefaultGamemode
 				};
-				Client.PacketMode = PacketMode.Play;
 
-				new SetCompression(Client) {CompressionLevel = ServerSettings.UseCompression ? ServerSettings.CompressionThreshold : -1 }.Write();
+				Client.PacketMode = PacketMode.Play;
+				
 
 				new JoinGame(Client) { Player = Client.Player }.Write();
 				new SpawnPosition(Client).Write();
 				//Client.StartKeepAliveTimer();
 				Client.Player.InitializePlayer();
+				Client.KeepAliveEnabled = true;
 			}
 		}
 

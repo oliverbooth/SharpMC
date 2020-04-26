@@ -36,13 +36,13 @@ namespace SharpMC.Core.Networking.Packages
 
 		public PlayerPositionAndLook(ClientWrapper client) : base(client)
 		{
-			SendId = 0x08;
+			SendId = 0x36;
 			ReadId = 0x06;
 		}
 
 		public PlayerPositionAndLook(ClientWrapper client, DataBuffer buffer) : base(client, buffer)
 		{
-			SendId = 0x08;
+			SendId = 0x36;
 			ReadId = 0x06;
 		}
 

@@ -60,7 +60,7 @@ namespace SharpMC.Core.Networking
 		{
 			foreach (var c in Clients.Values.ToArray())
 			{
-				if (c != null)
+				if (c != null && c.PacketMode != PacketMode.Login && c.KeepAliveEnabled)
 				{
 					new KeepAlive(c).Write();
 					/*if ((UnixTimeNow() - c.GetLastPing) > 20000)
@@ -85,10 +85,10 @@ namespace SharpMC.Core.Networking
 				int errors = PacketErrors[client.ClientIdentifier];
 				PacketErrors[client.ClientIdentifier] = errors + 1;
 
-				if (ServerSettings.DisplayPacketErrors)
+				if (false && ServerSettings.DisplayPacketErrors)
 				{
 					ConsoleFunctions.WriteWarningLine("Packet error for player: \"" + client.Player.Username + "\" Packet errors: " +
-					                                  PacketErrors[client.ClientIdentifier] + "\nError:\n" + exception.Message);
+					                                  PacketErrors[client.ClientIdentifier] + "\nError: " + exception.Message);
 				}
 
 				if (PacketErrors[client.ClientIdentifier] >= 3)
@@ -107,7 +107,7 @@ namespace SharpMC.Core.Networking
 			}
 			else
 			{
-				//Something really wrong
+				ConsoleFunctions.WriteErrorLine(exception.Message);
 			}
 		}
 

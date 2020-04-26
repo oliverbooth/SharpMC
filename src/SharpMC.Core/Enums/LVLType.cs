@@ -29,6 +29,8 @@ namespace SharpMC.Core.Enums
 		Flat,
 		LargeBiomes,
 		Amplified,
+		Customized,
+		Buffet,
 		Default11
 	}
 }
